@@ -1,0 +1,117 @@
+type Burn @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  bottomTick: Int! # int24
+  topTick: Int! # int24
+  liquidityAmount: BigInt! # uint128
+  amount0: BigInt! # uint256
+  amount1: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Collect @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+  recipient: Bytes! # address
+  bottomTick: Int! # int24
+  topTick: Int! # int24
+  amount0: BigInt! # uint128
+  amount1: BigInt! # uint128
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type CommunityFee @entity(immutable: true) {
+  id: Bytes!
+  communityFee0New: Int! # uint8
+  communityFee1New: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Fee @entity(immutable: true) {
+  id: Bytes!
+  feeZto: Int! # uint16
+  feeOtz: Int! # uint16
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Flash @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  recipient: Bytes! # address
+  amount0: BigInt! # uint256
+  amount1: BigInt! # uint256
+  paid0: BigInt! # uint256
+  paid1: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Incentive @entity(immutable: true) {
+  id: Bytes!
+  virtualPoolAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Initialize @entity(immutable: true) {
+  id: Bytes!
+  price: BigInt! # uint160
+  tick: Int! # int24
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LiquidityCooldown @entity(immutable: true) {
+  id: Bytes!
+  liquidityCooldown: BigInt! # uint32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Mint @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  owner: Bytes! # address
+  bottomTick: Int! # int24
+  topTick: Int! # int24
+  liquidityAmount: BigInt! # uint128
+  amount0: BigInt! # uint256
+  amount1: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Swap @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  recipient: Bytes! # address
+  amount0: BigInt! # int256
+  amount1: BigInt! # int256
+  price: BigInt! # uint160
+  liquidity: BigInt! # uint128
+  tick: Int! # int24
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TickSpacing @entity(immutable: true) {
+  id: Bytes!
+  newTickSpacing: Int! # int24
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

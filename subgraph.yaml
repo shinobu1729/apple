@@ -1,0 +1,54 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: AlgebraPool
+    network: arbitrum-one
+    source:
+      address: "0x521aa84ab3fcc4c05cABaC24Dc3682339887B126"
+      abi: AlgebraPool
+      startBlock: 101213149
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Burn
+        - Collect
+        - CommunityFee
+        - Fee
+        - Flash
+        - Incentive
+        - Initialize
+        - LiquidityCooldown
+        - Mint
+        - Swap
+        - TickSpacing
+      abis:
+        - name: AlgebraPool
+          file: ./abis/AlgebraPool.json
+      eventHandlers:
+        - event: Burn(indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
+          handler: handleBurn
+        - event: Collect(indexed address,address,indexed int24,indexed int24,uint128,uint128)
+          handler: handleCollect
+        - event: CommunityFee(uint8,uint8)
+          handler: handleCommunityFee
+        - event: Fee(uint16,uint16)
+          handler: handleFee
+        - event: Flash(indexed address,indexed address,uint256,uint256,uint256,uint256)
+          handler: handleFlash
+        - event: Incentive(indexed address)
+          handler: handleIncentive
+        - event: Initialize(uint160,int24)
+          handler: handleInitialize
+        - event: LiquidityCooldown(uint32)
+          handler: handleLiquidityCooldown
+        - event: Mint(address,indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
+          handler: handleMint
+        - event: Swap(indexed address,indexed address,int256,int256,uint160,uint128,int24)
+          handler: handleSwap
+        - event: TickSpacing(int24)
+          handler: handleTickSpacing
+      file: ./src/algebra-pool.ts
