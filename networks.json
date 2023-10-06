@@ -3,6 +3,9 @@
     "AlgebraPool": {
       "address": "0x521aa84ab3fcc4c05cABaC24Dc3682339887B126",
       "startBlock": 101213149
+    },
+    "OrangeVaultV1": {
+      "address": "0xB9c5425084671221d7D5A547dBf1Bdcec26C8B7d"
     }
   }
 }

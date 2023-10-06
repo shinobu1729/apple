@@ -1,197 +1,31 @@
-import {
-  Burn as BurnEvent,
-  Collect as CollectEvent,
-  CommunityFee as CommunityFeeEvent,
-  Fee as FeeEvent,
-  Flash as FlashEvent,
-  Incentive as IncentiveEvent,
-  Initialize as InitializeEvent,
-  LiquidityCooldown as LiquidityCooldownEvent,
-  Mint as MintEvent,
-  Swap as SwapEvent,
-  TickSpacing as TickSpacingEvent
-} from "../generated/AlgebraPool/AlgebraPool"
-import {
-  Burn,
-  Collect,
-  CommunityFee,
-  Fee,
-  Flash,
-  Incentive,
-  Initialize,
-  LiquidityCooldown,
-  Mint,
-  Swap,
-  TickSpacing
-} from "../generated/schema"
-
-export function handleBurn(event: BurnEvent): void {
-  let entity = new Burn(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.owner = event.params.owner
-  entity.bottomTick = event.params.bottomTick
-  entity.topTick = event.params.topTick
-  entity.liquidityAmount = event.params.liquidityAmount
-  entity.amount0 = event.params.amount0
-  entity.amount1 = event.params.amount1
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
+import { Collect as CollectEvent, Swap as SwapEvent } from "../generated/AlgebraPool/AlgebraPool";
+import { Burn, Collect, GlobalState, Initialize, Swap } from "../generated/schema";
 
 export function handleCollect(event: CollectEvent): void {
-  let entity = new Collect(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.owner = event.params.owner
-  entity.recipient = event.params.recipient
-  entity.bottomTick = event.params.bottomTick
-  entity.topTick = event.params.topTick
-  entity.amount0 = event.params.amount0
-  entity.amount1 = event.params.amount1
+  if (event.params.owner.toHexString().toLowerCase() == "0x767901b7d185bb951c7da20cf55ae1f681953217") {
+    let globalState = GlobalState.load("current");
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+    //calc feeAPR with tick, timestamp - lastTimeCollect, fee0&1, totalAsset
+    let amount0 = event.params.amount0;
+    let amount1 = event.params.amount1;
+    let tick = globalState.currentTick;
+    let totalAsset = globalState.totalAsset;
 
-  entity.save()
-}
-
-export function handleCommunityFee(event: CommunityFeeEvent): void {
-  let entity = new CommunityFee(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.communityFee0New = event.params.communityFee0New
-  entity.communityFee1New = event.params.communityFee1New
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
-
-export function handleFee(event: FeeEvent): void {
-  let entity = new Fee(event.transaction.hash.concatI32(event.logIndex.toI32()))
-  entity.feeZto = event.params.feeZto
-  entity.feeOtz = event.params.feeOtz
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
-
-export function handleFlash(event: FlashEvent): void {
-  let entity = new Flash(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.sender = event.params.sender
-  entity.recipient = event.params.recipient
-  entity.amount0 = event.params.amount0
-  entity.amount1 = event.params.amount1
-  entity.paid0 = event.params.paid0
-  entity.paid1 = event.params.paid1
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
-
-export function handleIncentive(event: IncentiveEvent): void {
-  let entity = new Incentive(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.virtualPoolAddress = event.params.virtualPoolAddress
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
-
-export function handleInitialize(event: InitializeEvent): void {
-  let entity = new Initialize(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.price = event.params.price
-  entity.tick = event.params.tick
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
-
-export function handleLiquidityCooldown(event: LiquidityCooldownEvent): void {
-  let entity = new LiquidityCooldown(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.liquidityCooldown = event.params.liquidityCooldown
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
-}
-
-export function handleMint(event: MintEvent): void {
-  let entity = new Mint(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.sender = event.params.sender
-  entity.owner = event.params.owner
-  entity.bottomTick = event.params.bottomTick
-  entity.topTick = event.params.topTick
-  entity.liquidityAmount = event.params.liquidityAmount
-  entity.amount0 = event.params.amount0
-  entity.amount1 = event.params.amount1
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+    globalState.lastTimeCollect = event.block.timestamp;
+    globalState.save();
+  }
 }
 
 export function handleSwap(event: SwapEvent): void {
-  let entity = new Swap(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.sender = event.params.sender
-  entity.recipient = event.params.recipient
-  entity.amount0 = event.params.amount0
-  entity.amount1 = event.params.amount1
-  entity.price = event.params.price
-  entity.liquidity = event.params.liquidity
-  entity.tick = event.params.tick
+  let globalState = GlobalState.load("current");
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  if (globalState == null) {
+    globalState = new GlobalState("current");
+    globalState.currentTick = 0;
+    globalState.totalAsset = 0;
+  }
 
-  entity.save()
-}
+  globalState.currentTick = event.params.tick;
 
-export function handleTickSpacing(event: TickSpacingEvent): void {
-  let entity = new TickSpacing(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.newTickSpacing = event.params.newTickSpacing
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  globalState.save();
 }

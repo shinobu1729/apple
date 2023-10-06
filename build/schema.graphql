@@ -24,33 +24,19 @@ type Collect @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type Vault {
-  id: Bytes! #vault ddress
-  totalAsset: BigInt!
-  FeeAPR: Int!
-  rate: Int!
-  totalAsset: Int!
-  tokenComposition: Composition!
-  lastTimeCollect: BigInt!
-  amm: Pool!
+type OwnerCollects @entity {
+  id: Bytes!
+  owner: Bytes! # address
+  collects: [Bytes!]! # List of Collect entity IDs
 }
 
-type Pool {
-  id: Bytes! #pool address
-  currentTick: Int!
-}
-
-type Composition {
-  id: Bytes! #vault address
-  uniETH: Int!
-  uniUSDC: Int!
-  aaveUSDC: Int!
-  aaveETH: Int!
-}
-
-type GlobalState @entity {
-  id: String! # 'current'
-  tvl: Int!
+type CommunityFee @entity(immutable: true) {
+  id: Bytes!
+  communityFee0New: Int! # uint8
+  communityFee1New: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
 }
 
 type Fee @entity(immutable: true) {

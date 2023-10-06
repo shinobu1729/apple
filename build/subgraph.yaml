@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: AlgebraPool
@@ -27,7 +27,7 @@ dataSources:
         - TickSpacing
       abis:
         - name: AlgebraPool
-          file: ./abis/AlgebraPool.json
+          file: AlgebraPool/abis/AlgebraPool.json
       eventHandlers:
         - event: Burn(indexed address,indexed int24,indexed int24,uint128,uint256,uint256)
           handler: handleBurn
@@ -51,7 +51,7 @@ dataSources:
           handler: handleSwap
         - event: TickSpacing(int24)
           handler: handleTickSpacing
-      file: ./src/algebra-pool.ts
+      file: AlgebraPool/AlgebraPool.wasm
   - kind: ethereum
     name: OrangeVaultV1
     network: arbitrum-one
@@ -70,7 +70,7 @@ dataSources:
         - Transfer
       abis:
         - name: OrangeVaultV1
-          file: ./abis/OrangeVaultV1.json
+          file: OrangeVaultV1/abis/OrangeVaultV1.json
       eventHandlers:
         - event: Action(indexed uint8,indexed
             address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
@@ -81,4 +81,4 @@ dataSources:
           handler: handleBurnAndCollectFees
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-      file: ./src/orange-vault-v-1.ts
+      file: OrangeVaultV1/OrangeVaultV1.wasm
